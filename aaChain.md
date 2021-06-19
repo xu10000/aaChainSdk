@@ -47,8 +47,8 @@
 ## 获取连接
 
 ```
-// npm install @xu10000/aaChainSdk
-var AAChainSdk = require("@xu10000/aaChainSdk");
+// npm install @xu10000/aa_chain_sdk
+var AAChainSdk = require("@xu10000/aa_chain_sdk");
 var provider = {
 	chainType: BlockChainSdk.chainType.AAChain
 	// 测试网络 test.aachain.com (后续提供，目前还没有)

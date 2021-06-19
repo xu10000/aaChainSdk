@@ -1,6 +1,6 @@
 {
-  "name": "@xu10000/aaChainSdk",
-  "version": "1.0.0",
+  "name": "@xu10000/aa_chain_sdk",
+  "version": "5.0.0",
   "description": "与区块链交互的sdk",
   "main": "./lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://git.tichain.com.cn/tic_develop/blockchain_sdk"
   },
   "author": "",
   "license": "ISC",
