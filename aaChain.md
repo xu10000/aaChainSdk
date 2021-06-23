@@ -34,7 +34,7 @@
 	difficulty: int // 挖矿难度
 	totalDifficulty: int // 到目前为止的难度
 	size: int // 区块大小
-	gasLimit: int // gas限制
+	gasLimit: string // gas限制
 	gasUsed: string // 使用的gas
 	timestamp: int // 打包的时间戳
 }

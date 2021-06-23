@@ -1,8 +1,8 @@
 var BlockchainSdk = require('../lib/index');
 var provider = {
     chainType: BlockchainSdk.chainType.AAChain,
-    host: '192.168.1.232', //测试
-    port: 8545,
+    host: '13.212.188.173', //测试
+    port: 8000,
     // host: '47.106.199.160', //正式网络
     // port: 8000,
     testnet: true, //标志是否为测试网络
@@ -270,7 +270,7 @@ var exportAndunlockKeyStore = function () {
 // findTransactionByBlock(8831247)
 
 //查询最新区块
-// getLaskBlock();
+getLaskBlock();
 
 //公钥转地址
 getAddress('0x8ae501a2a422217334f80daea4ffffcc5dd0f4d54dabffa7c2e5827b27c39406');
@@ -332,16 +332,16 @@ exportAndunlockKeyStore()
 //     amountSort: 1
 
 // })
-var seed = BlockchainSdk.createSeed()
+// var seed = BlockchainSdk.createSeed()
 //  检查输入的种子
-validSeed("延 伐 厅 度 狱 奇 塔 逐 挑 臣 岛 防")
+// validSeed("延 伐 厅 度 狱 奇 塔 逐 挑 臣 岛 防")
 
 // 根据种子获取私钥
-getPrivateKeyBySeed('延 伐 厅 度 狱 奇 塔 逐 挑 臣 岛 防');
+// getPrivateKeyBySeed('延 伐 厅 度 狱 奇 塔 逐 挑 臣 岛 防');
 // console.log(seed)
 
 // 由私钥获取公钥和地址
-getPublicKeyAndAddress('0xB68643F16EA6D08B738D772C614656CDE1B04F0994D7EB27C50AC0D00E0D504E')
+getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
 // createAAChainTx()
 // 获取代币平均手续费
