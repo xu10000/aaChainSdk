@@ -100,7 +100,7 @@ var block = await blockchainSdk.getLastBlock()
 }
 **/
 var nonce = ? // int 类型，从提供的api接口获取
-var fee = await blockchainSdk.getAverageFee();
+var fee = await blockchainSdk.getAverageFee(to, null);
 var txData = await blockchainSdk.createTx (privateKey, to, value, fee, null/**发送时合约地址默认为空**/, null/**备注信息**/, nonce)
 // 发送交易
 提供的api接口发送，参数为txData
@@ -131,7 +131,8 @@ var address =  blockchainSdk.getAddress(publicKey)
 @return{string} 
 
 **/
-var fee = await sdk.getAverageFee()
+// to 收款人地址
+var fee = await sdk.getAverageFee(to, null)
 ```
 
 

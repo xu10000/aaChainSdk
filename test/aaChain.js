@@ -13,7 +13,7 @@ var sdk = new BlockchainSdk(provider);
 var recipient = '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b';
 var contract = '0x82e16c95936372a6a885faff6bdef1f2a6401fd2'
 
-var privateKey = '374848A2586E0EC183263D9032E4F7F35C3E2EDBA0B67D9EEF6FCDB48C287B27'
+var privateKey = 'aa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3'
 // var recipient = '0x1182cd7b6399fdc2f2facadc324d04a0fdfae262';  //正式网络
 // var contract = '0x413da038a39B520db86258489d1242D40497cf73'
 // var privateKey = '0xcc9f9a26087de91c546ce35d474c3e803bb0a16ad93b5e35bc022b0913e17564'
@@ -46,18 +46,18 @@ var sendtx = async function () {
     }
 }
 
-var createAAChainTx = function () {
+var createAAChainTx = async function () {
     try {
         // 获取发送者地址
         var sender = sdk.getPublicKeyAndAddress(privateKey).address;
         console.log(`sender: ${sender}`)
         // 获取nonce
-        var nonce = 0;
+        var nonce = await sdk.getNonce(sender);
         console.log(`当前交易的nonce为： ${nonce}`)
         // 获取平均手续费
-        var fee = '21000000'
+        var fee = await sdk.getAverageFee(recipient, null)
         // 创建交易
-        var txData = sdk.createTx(
+        var txData = await sdk.createTx(
             privateKey,
             recipient,
             '10000000000000000', // eth数量
@@ -66,7 +66,7 @@ var createAAChainTx = function () {
             "",
             nonce,
         )
-        console.log(`txhash: ${JSON.stringify(txData)}`);
+        console.log(`tx-----: ${JSON.stringify(txData)}`);
         // 发送交易
     } catch (err) {
         throw err;
@@ -243,6 +243,12 @@ var getTokenAverageFee = async function () {
     console.log(`成功获取eth链上代币平均手续费： ${averageFee}`);
 }
 
+
+var unsign = function (rawTransaction) {
+    var tx = sdk.unsign(rawTransaction)
+    console.log(`decode tx ${JSON.stringify(tx)}`);
+}
+
 var exportAndunlockKeyStore = function () {
     var keystoreObj = sdk.getKeyStore(privateKey, "zx27892509");
     console.log(`getKeyStore obj: `, keystoreObj)
@@ -288,9 +294,9 @@ getAddress('0x8ae501a2a422217334f80daea4ffffcc5dd0f4d54dabffa7c2e5827b27c39406')
 
 
 // 查询地址是否合法
-checkAddress('0x25576cf5eee80DfB41B8095B529fe7fdC143d720')
+// checkAddress('0x25576cf5eee80DfB41B8095B529fe7fdC143d720')
 
-exportAndunlockKeyStore()
+// exportAndunlockKeyStore()
 // 根据高度或hash查询区块信息
 // getBlock('0x506e5c0e69e50cf220577a11b9b6e33ecf5ab7b03f4b446e4abdb8bd5ae79193')
 
@@ -341,8 +347,10 @@ exportAndunlockKeyStore()
 // console.log(seed)
 
 // 由私钥获取公钥和地址
-getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
+// getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
-// createAAChainTx()
+createAAChainTx()
 // 获取代币平均手续费
 // getTokenAverageFee()
+
+// unsign(`0xf86880843b9aca008094ac37c62e0d6f35b9c0adf7a289d1731d6246b85b872386f26fc10000801ca0cc47561a760ec66838fc9fbe19d1032844a50bc9280c30d7c32d96503e416c82a002baa0831aefc95d32834bf1dc21f502caa62cb786dd23985349e1fe6801ab3b`)
