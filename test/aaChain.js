@@ -66,6 +66,7 @@ var createAAChainTx = async function () {
             "",
             nonce,
         )
+        sdk.unsign(txData.codingTx)
         console.log(`tx-----: ${JSON.stringify(txData)}`);
         // 发送交易
     } catch (err) {
@@ -243,6 +244,10 @@ var getTokenAverageFee = async function () {
     console.log(`成功获取eth链上代币平均手续费： ${averageFee}`);
 }
 
+var getTransaction = async function (hash) {
+    var tx = await sdk.getTransaction(hash)
+    console.log(` tx ${JSON.stringify(tx)}`);
+}
 
 var unsign = function (rawTransaction) {
     var tx = sdk.unsign(rawTransaction)
@@ -276,10 +281,10 @@ var exportAndunlockKeyStore = function () {
 // findTransactionByBlock(8831247)
 
 //查询最新区块
-getLaskBlock();
+// getLaskBlock();
 
 //公钥转地址
-getAddress('0x8ae501a2a422217334f80daea4ffffcc5dd0f4d54dabffa7c2e5827b27c39406');
+// getAddress('0x8ae501a2a422217334f80daea4ffffcc5dd0f4d54dabffa7c2e5827b27c39406');
 
 // 获取nonce
 // getNonce('0xc445de1f8a813b36e791c1f507d7da0e173b1ece')
@@ -349,8 +354,8 @@ getAddress('0x8ae501a2a422217334f80daea4ffffcc5dd0f4d54dabffa7c2e5827b27c39406')
 // 由私钥获取公钥和地址
 // getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
-createAAChainTx()
+// createAAChainTx()
 // 获取代币平均手续费
 // getTokenAverageFee()
-
-// unsign(`0xf86880843b9aca008094ac37c62e0d6f35b9c0adf7a289d1731d6246b85b872386f26fc10000801ca0cc47561a760ec66838fc9fbe19d1032844a50bc9280c30d7c32d96503e416c82a002baa0831aefc95d32834bf1dc21f502caa62cb786dd23985349e1fe6801ab3b`)
+getTransaction('0xc1bd0dc41bdd5c87e898dbd22e7809a2f296d05a93c646b75823f8de9142de12')
+// unsign(`0xf86903843b9aca0082520894ac37c62e0d6f35b9c0adf7a289d1731d6246b85b872386f26fc1000080389f3039d25254a07984b9b725237f36659197dc563c31ae4ed9d88c9700762e98a0561faa60e077af4e4db402b42d89752f24dd5f1f0a508d39dade2ad0f86b5cf9`)
