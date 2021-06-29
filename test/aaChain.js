@@ -60,45 +60,45 @@ var createAAChainTx = async function () {
         var txData = await sdk.createTx(
             privateKey,
             recipient,
-            '10000000000000000', // eth数量
+            '10000000000000', // eth数量
             fee,
             null,
             "",
             nonce,
         )
         sdk.unsign(txData.codingTx)
-        console.log(`tx-----: ${JSON.stringify(txData)}`);
+        console.log(`tx-----: ${JSON.stringify(txData)}  fee : ${fee} nonce: ${nonce}`);
         // 发送交易
     } catch (err) {
         throw err;
     }
 }
 
-var sendErc20tx = async function () {
-    // 获取发送者地址
-    var sender = await sdk.getPublicKeyAndAddress(privateKey).address;
-    // 获取nonce
-    var nonce = await sdk.getNonce(sender);
-    var value = '100000000';
-    console.log(`当前交易的nonce为： ${nonce}`)
-    // 获取平均手续费
-    var fee = await sdk.getTokenAverageFee(sender, recipient, value, contract)
-    console.log(`fee: ${fee}`);
-    // 创建交易
-    var txData = await sdk.createTx(
-        privateKey,
-        recipient,
-        value, // 代币数量
-        fee, //btc数量  //usdt的发送也要用btc作为手续费
-        contract,
-        "",
-        nonce
-    )
-    console.log(`txhash: ${JSON.stringify(txData)}`);
-    // 发送交易
-    var txHash = await sdk.send(txData);
-    console.log(`成功发送交易， hash： ${txHash}`)
-}
+// var sendErc20tx = async function () {
+//     // 获取发送者地址
+//     var sender = await sdk.getPublicKeyAndAddress(privateKey).address;
+//     // 获取nonce
+//     var nonce = await sdk.getNonce(sender);
+//     var value = '100000000';
+//     console.log(`当前交易的nonce为： ${nonce}`)
+//     // 获取平均手续费
+//     var fee = await sdk.getTokenAverageFee(sender, recipient, value, contract)
+//     console.log(`fee: ${fee}`);
+//     // 创建交易
+//     var txData = await sdk.createTx(
+//         privateKey,
+//         recipient,
+//         value, // 代币数量
+//         fee, //btc数量  //usdt的发送也要用btc作为手续费
+//         contract,
+//         "",
+//         nonce
+//     )
+//     console.log(`txhash: ${JSON.stringify(txData)}`);
+//     // 发送交易
+//     var txHash = await sdk.send(txData);
+//     console.log(`成功发送交易， hash： ${txHash}`)
+// }
 
 var getBalance = async function (recipient) {
     var balance = await sdk.getBalance(recipient);
@@ -203,6 +203,23 @@ var checkAddress = function (addr) {
     console.log(`地址是否合法： ${flag}`);
 }
 
+var createErc20Tx = async function (contract, amount, recipient) {
+    var sender = sdk.getPublicKeyAndAddress(privateKey).address;
+    var fee = await sdk.getErc20TransferFee(contract, sender, recipient, amount);
+    var nonce = await sdk.getNonce(sender)
+    var txData = await sdk.createTx(
+        privateKey,
+        recipient,
+        amount,
+        fee,
+        contract,
+        "",
+        nonce,
+    )
+
+    console.log(`getErc20TransferFee fee ${fee}  txData ${JSON.stringify(txData)}`);
+
+}
 var getBlock = async function (numberOrHash) {
     var data = await sdk.getBlock(numberOrHash);
     console.log(`获取区块信息 ${JSON.stringify(data)}`);
@@ -268,7 +285,9 @@ var exportAndunlockKeyStore = function () {
 //查询余额
 // getBalance('0xb5231a31fef7ae28e9c894ec80af7fbcccd0663f')
 
-// getErc20Balance('0x825906fe3f5dfb1b87d265b59f6952bba9a6de79', '0xf24a2674208b7b5ec2f2863dcb65938ef82dc180')
+// getErc20Balance('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
+
+createErc20Tx('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '1000', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
 // getErc20Symbol(contract)
 // getErc20Decimal(contract)
 
@@ -357,5 +376,5 @@ var exportAndunlockKeyStore = function () {
 // createAAChainTx()
 // 获取代币平均手续费
 // getTokenAverageFee()
-getTransaction('0xc1bd0dc41bdd5c87e898dbd22e7809a2f296d05a93c646b75823f8de9142de12')
+// getTransaction('0xc1bd0dc41bdd5c87e898dbd22e7809a2f296d05a93c646b75823f8de9142de12')
 // unsign(`0xf86903843b9aca0082520894ac37c62e0d6f35b9c0adf7a289d1731d6246b85b872386f26fc1000080389f3039d25254a07984b9b725237f36659197dc563c31ae4ed9d88c9700762e98a0561faa60e077af4e4db402b42d89752f24dd5f1f0a508d39dade2ad0f86b5cf9`)

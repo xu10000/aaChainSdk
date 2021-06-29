@@ -177,3 +177,32 @@ var priKeyAndAddress = BlockchainSdk.unlockKeyStore(keyStoreObj, passwd) // keys
 
 ```
 
+
+
+## 查询Erc20代币的余额
+
+```
+/**@param {string} contract // 代币的合约地址，可替换。
+**@param {string} address // 查询地址
+var balance = await sdk.getErc20Balance(contract, address);
+```
+
+
+
+## 创建erc20转账的交易
+
+```
+// 获取代币转账的手续费
+/**@param {string} contract // 代币的合约地址，可替换。
+**@param {string} sender // 转账人
+**@param {string} recipient // 收款人
+**@param {string} amount  // 转账的代币金额
+** @return{string}  
+ var fee = await sdk.getErc20TransferFee(contract, sender, to, amount);
+ var nonce = ? // int 类型，从提供的api接口获取
+//  !! 注意，这里和上面不同的是，要传入contract 字段
+ var txData = await blockchainSdk.createTx (privateKey, to, value, fee, contract, null/**备注信息**/, nonce)
+// 然后再把生成的交易发送到接口
+
+```
+
