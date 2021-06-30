@@ -182,6 +182,13 @@ var getAddress = function (privateKey) {
     console.log(`成功获取地址： ${address}`)
 }
 
+var getErc20TxArr = async function (hash) {
+
+    var tx = await sdk.getTransaction(hash)
+    var erc20TxArr = await sdk.getErc20TxArr(tx)
+    console.log(`erc20TxArr ${JSON.stringify(erc20TxArr)}`)
+}
+
 var getNonce = async function (address) {
     var nonce = await sdk.getNonce(address);
     console.log(`成功获取${address} nonce: ${nonce}`);
@@ -288,6 +295,7 @@ var exportAndunlockKeyStore = function () {
 // getErc20Balance('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
 
 createErc20Tx('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '1000', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
+getErc20TxArr('0x3b989090838f67a6de03f42149e46c9c5ef85c3ff8b7f5a0387ef6c8fc7d75ef')
 // getErc20Symbol(contract)
 // getErc20Decimal(contract)
 

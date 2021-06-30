@@ -1,6 +1,6 @@
 {
   "name": "@xu10000/aa_chain_sdk",
-  "version": "5.1.2",
+  "version": "5.1.3",
   "description": "与区块链交互的sdk",
   "main": "./lib/index.js",
   "scripts": {
