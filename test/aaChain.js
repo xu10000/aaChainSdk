@@ -67,7 +67,7 @@ var createAAChainTx = async function () {
             nonce,
         )
         sdk.unsign(txData.codingTx)
-        console.log(`tx-----: ${JSON.stringify(txData)}  fee : ${fee} nonce: ${nonce}`);
+        console.log(`common tx-----: ${JSON.stringify(txData)}  fee : ${fee} nonce: ${nonce}`);
         // 发送交易
     } catch (err) {
         throw err;
@@ -268,6 +268,13 @@ var getTokenAverageFee = async function () {
     console.log(`成功获取eth链上代币平均手续费： ${averageFee}`);
 }
 
+var getErc20InfoFromInput = async function (hash) {
+    var tx = await sdk.getTransaction(hash)
+    var inputMessage = sdk.getErc20InfoFromInput(tx)
+
+    console.log(` inputMessage ${JSON.stringify(inputMessage)}`);
+}
+
 var getTransaction = async function (hash) {
     var tx = await sdk.getTransaction(hash)
     console.log(` tx ${JSON.stringify(tx)}`);
@@ -294,8 +301,9 @@ var exportAndunlockKeyStore = function () {
 
 // getErc20Balance('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
 
-createErc20Tx('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '1000', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
-getErc20TxArr('0x3b989090838f67a6de03f42149e46c9c5ef85c3ff8b7f5a0387ef6c8fc7d75ef')
+// createErc20Tx('0x724Cbb5c969890Adc6580d610f9086Ecc003A53A', '1000', '0xac37c62e0d6f35b9c0adf7a289d1731d6246b85b')
+// getErc20TxArr('0x3b989090838f67a6de03f42149e46c9c5ef85c3ff8b7f5a0387ef6c8fc7d75ef')
+// getErc20InfoFromInput('0x67a26778e2998e013c125acc03c375ea9bac40670aecd2548a6859d6b62325f8')
 // getErc20Symbol(contract)
 // getErc20Decimal(contract)
 
@@ -381,7 +389,7 @@ getErc20TxArr('0x3b989090838f67a6de03f42149e46c9c5ef85c3ff8b7f5a0387ef6c8fc7d75e
 // 由私钥获取公钥和地址
 // getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
-// createAAChainTx()
+createAAChainTx()
 // 获取代币平均手续费
 // getTokenAverageFee()
 // getTransaction('0xc1bd0dc41bdd5c87e898dbd22e7809a2f296d05a93c646b75823f8de9142de12')
