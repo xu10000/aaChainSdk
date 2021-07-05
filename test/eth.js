@@ -1,9 +1,9 @@
 var BlockchainSdk = require('../lib/index');
 var provider = {
     chainType: BlockchainSdk.chainType.ETH,
-    host: '192.168.1.119', //测试
+    host: '94.74.98.70', //测试
     port: 8545,
-    testnet: true, //标志是否为测试网络
+    testnet: false, //标志是否为测试网络
 }
 
 
@@ -28,16 +28,30 @@ var sendtx = async function () {
         var txData = await sdk.createTx(
             privateKey,
             recipient,
-            '10000000000000000', // eth数量
+            '1', // eth数量
             fee,
             null,
             "",
             nonce,
         )
         console.log(`txhash: ${JSON.stringify(txData)}`);
+
+        var txData2 = await sdk.createTx(
+            privateKey,
+            recipient,
+            '1', // eth数量
+            fee,
+            null,
+            "",
+            nonce,
+            1.5
+        )
+
+        console.log(`txhash22: ${JSON.stringify(txData2)}`);
+
         // 发送交易
-        var txHash = await sdk.send(txData);
-        console.log(`成功发送交易， hash： ${txHash}`)
+        // var txHash = await sdk.send(txData.codingTx);
+        // console.log(`成功发送交易， hash： ${txHash}`)
     } catch (err) {
         throw err;
     }
@@ -64,8 +78,8 @@ var sendErc20tx = async function () {
     )
     console.log(`txhash: ${JSON.stringify(txData)}`);
     // 发送交易
-   var txHash = await sdk.send(txData);
-   console.log(`成功发送交易， hash： ${txHash}`)
+    var txHash = await sdk.send(txData);
+    console.log(`成功发送交易， hash： ${txHash}`)
 }
 
 var getBalance = async function (recipient) {
@@ -105,22 +119,22 @@ var findErc20Tx = async function (tx) {
 var findTransactionByBlock = async function (numberOrHash) {
     var arr = []
     // 可输入区块hash和高度
-    for(let i =0; i< 10; i++) {
+    for (let i = 0; i < 10; i++) {
         arr.push(sdk.findTxByBlock(numberOrHash++))
     }
     // arr.push(sdk.findTxByBlock(numberOrHash))
     var x = await Promise.all(arr)
-        .catch(err=> {
+        .catch(err => {
             throw new Error(err)
         });
 
-        // for (let i = 0 ;i < x[0].length; i++) {
-        //     console.log(i)
-        //     if( x[0][i].txHash == '0xa504cb9aa76371130ee8f7425645e2237d2b71970cbdca22833983e192b3e523' ) {
-        //         console.log(x[0][i]);
-        //     }
-        // }
-       console.log('都查询了', x)
+    // for (let i = 0 ;i < x[0].length; i++) {
+    //     console.log(i)
+    //     if( x[0][i].txHash == '0xa504cb9aa76371130ee8f7425645e2237d2b71970cbdca22833983e192b3e523' ) {
+    //         console.log(x[0][i]);
+    //     }
+    // }
+    console.log('都查询了', x)
     //console.log(`查询交易成功： ${JSON.stringify(txData)}`)
 }
 
@@ -150,64 +164,64 @@ var getAddress = function (privateKey) {
     console.log(`成功获取地址： ${address}`)
 }
 
-var getNonce = async function(address) {
+var getNonce = async function (address) {
     var nonce = await sdk.getNonce(address);
     console.log(`成功获取${address} nonce: ${nonce}`);
 }
 
-var getAverageFee = async function() {
+var getAverageFee = async function () {
     var averageFee = await sdk.getAverageFee()
     console.log(`成功获取eth链上平均手续费： ${averageFee}`);
 }
 
 // FIXME:原本是同步方法， 但是改为适用于IMToken的时候，它为异步方法。尴尬
-var getPrivateKeyBySeed = function(seed) {
+var getPrivateKeyBySeed = function (seed) {
     var priv = sdk.getPrivateKeyBySeed(seed);
     console.log(`根据种子 ${seed} 获取私钥成功： ${priv}`);
 }
 
-var checkAddress = function(addr) {
+var checkAddress = function (addr) {
     var flag = sdk.checkAddress(addr);
     console.log(`地址是否合法： ${flag}`);
 }
 
-var getBlock = async function(numberOrHash) {
+var getBlock = async function (numberOrHash) {
     var data = await sdk.getBlock(numberOrHash);
     console.log(`获取区块信息 ${JSON.stringify(data)}`);
 }
 
-var getTxsByAddress = async function(obj) {
+var getTxsByAddress = async function (obj) {
     var arr = await sdk.getTxsByAddress(obj);
     console.log(`获取交易信息 ${JSON.stringify(arr)}`);
 }
 
-var getErc20TxsByAddress = async function(obj) {
+var getErc20TxsByAddress = async function (obj) {
     var arr = await sdk.getErc20TxsByAddress(obj);
     console.log(`获取交易信息 ${JSON.stringify(arr)}`);
 }
 
-var getPendingTxsByAddress = async function(obj) {
+var getPendingTxsByAddress = async function (obj) {
     var arr = await sdk.getPendingTxsByAddress(obj);
     console.log(`获取pending交易信息 ${JSON.stringify(arr)}`);
 }
 
-var getPendingErc20TxsByAddress = async function(obj) {
+var getPendingErc20TxsByAddress = async function (obj) {
     var arr = await sdk.getPendingErc20TxsByAddress(obj);
     console.log(`获取pending交易信息 ${JSON.stringify(arr)}`);
 }
 
-var validSeed = async function(seed) {
+var validSeed = async function (seed) {
     var flag = await BlockchainSdk.validSeed(seed);
     console.log(`检查种子是否成功： ${flag}`);
 }
 
-var getTokenAverageFee = async function() {
+var getTokenAverageFee = async function () {
     // rinkeby usdt: 0xA27213A604aA67a728aC274795591F71AEfDa45B
     // rinkeby ztc: 0x8FE3DFf2B05DB2A2740ED356Eae9ae9e5FeF11cc
     var sender = '0x987D7cB3De15d8c9c8e3F3a992B1e32f977d20d0';
     var recipient = '0x83a8Fb504D271da3D3C5b306B86c4e19De239906';
-    var  value = '1000000000000000';
-    var  contract = '0x8FE3DFf2B05DB2A2740ED356Eae9ae9e5FeF11cc'
+    var value = '1000000000000000';
+    var contract = '0x8FE3DFf2B05DB2A2740ED356Eae9ae9e5FeF11cc'
     var averageFee = await sdk.getTokenAverageFee(sender, recipient, value, contract)
     console.log(`成功获取eth链上代币平均手续费： ${averageFee}`);
 }
@@ -215,7 +229,7 @@ var getTokenAverageFee = async function() {
 // createKeypair();
 
 //查询余额
-// getBalance('0xb5231a31fef7ae28e9c894ec80af7fbcccd0663f')
+getBalance('0xcf4be57aa078dc7568c631be7a73adc1cda992f8')
 
 // getErc20Balance('0x825906fe3f5dfb1b87d265b59f6952bba9a6de79', '0xf24a2674208b7b5ec2f2863dcb65938ef82dc180')
 // getErc20Symbol(contract)
@@ -248,8 +262,8 @@ var getTokenAverageFee = async function() {
 // getTokenAverageFee()
 
 // 发送交易
-// sendtx()
-sendErc20tx()
+sendtx()
+// sendErc20tx()
 
 // 根据种子获取私钥
 // getPrivateKeyBySeed('延 伐 厅 度 狱 奇 塔 逐 挑 臣 岛 防');

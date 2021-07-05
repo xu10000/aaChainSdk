@@ -68,6 +68,19 @@ var createAAChainTx = async function () {
         )
         sdk.unsign(txData.codingTx)
         console.log(`common tx-----: ${JSON.stringify(txData)}  fee : ${fee} nonce: ${nonce}`);
+
+        var txData2 = await sdk.createTx(
+            privateKey,
+            recipient,
+            '10000000000000', // eth数量
+            fee,
+            null,
+            "",
+            nonce,
+            1.5
+        )
+        sdk.unsign(txData2.codingTx)
+        console.log(`common tx-----: ${JSON.stringify(txData2)}  fee : ${fee} nonce: ${nonce}`);
         // 发送交易
     } catch (err) {
         throw err;
@@ -390,6 +403,7 @@ var exportAndunlockKeyStore = function () {
 // getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
 createAAChainTx()
+
 // 获取代币平均手续费
 // getTokenAverageFee()
 // getTransaction('0xc1bd0dc41bdd5c87e898dbd22e7809a2f296d05a93c646b75823f8de9142de12')
