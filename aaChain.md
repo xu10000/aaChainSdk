@@ -50,7 +50,7 @@
 // npm install @xu10000/aa_chain_sdk
 var AAChainSdk = require("@xu10000/aa_chain_sdk");
 var provider = {
-	chainType: BlockChainSdk.chainType.AAChain
+	chainType: int  // 2 是eth 4 是aaChain
 	// 测试网络 test.aachain.com (后续提供，目前还没有)
 	host: 'test.aachain.com',
 	port: 8100,
@@ -99,11 +99,11 @@ var block = await blockchainSdk.getLastBlock()
 	codingTx{string} //编码过的交易结构体，用来发送
 }
 **/
-var nonce = ? // int 类型，从提供的api接口获取
+var nonce = ? // int 类型，从提供的api接口获取, aaChain和eth的nonce是分别两个接口
 var fee = await blockchainSdk.getAverageFee(to, null);
 var txData = await blockchainSdk.createTx (privateKey, to, value, fee, null/**发送时合约地址默认为空**/, null/**备注信息**/, nonce)
 // 发送交易
-提供的api接口发送，参数为txData
+提供的api接口发送，参数为txData, aaChain和eth的发送交易是分别两个接口
 ```
 ## 查询账户余额 （需要节点）
 
@@ -199,10 +199,10 @@ var balance = await sdk.getErc20Balance(contract, address);
 **@param {string} amount  // 转账的代币金额
 ** @return{string}  
  var fee = await sdk.getErc20TransferFee(contract, sender, to, amount);
- var nonce = ? // int 类型，从提供的api接口获取
+ var nonce = ? // int 类型，从提供的api接口获取, aaChain和eth的nonce是分别两个接口
 //  !! 注意，这里和上面不同的是，要传入contract 字段
  var txData = await blockchainSdk.createTx (privateKey, to, value, fee, contract, null/**备注信息**/, nonce)
-// 然后再把生成的交易发送到接口
+// 然后再把生成的交易发送到接口，aaChain和eth的发送交易是分别两个接口
 
 ```
 
