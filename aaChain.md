@@ -206,3 +206,19 @@ var balance = await sdk.getErc20Balance(contract, address);
 
 ```
 
+## 覆盖还在pendding的交易
+
+```
+注意： 1. 如果要覆盖原来的交易，需要客户端记录还在pendding交易的nonce，from, to, value。
+			2.在生成新交易时，多输入一个rate字段。即加速的手续费是原来的多少，建议至少填入原来的3倍
+			3. 需要用户的余额 > value + fee * rate * rate
+			4. 提醒： 覆盖不一定会成功（大部分会成功，一定要测试到位）
+		
+// 唯一不同的是多了个rate， 注意以下引用的是转主币的例子，如果需要转代币，要参考erc20代币的例子！！！，同样加个rate
+var txData = await blockchainSdk.createTx (privateKey, to, value, fee, null/**发送时合约地址默认为空**/, null/**备注信息**/, nonce, rate)
+// 发送交易
+提供的api接口发送，参数为txData, aaChain和eth的发送交易是分别两个接口
+```
+
+
+

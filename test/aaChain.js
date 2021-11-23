@@ -1,11 +1,11 @@
 var BlockchainSdk = require('../lib/index');
 var provider = {
     chainType: BlockchainSdk.chainType.AAChain,
-    host: '13.212.188.173', //测试
+    host: '161.202.173.39', //测试
     port: 8000,
     // host: '47.106.199.160', //正式网络
     // port: 8000,
-    testnet: true, //标志是否为测试网络
+    testnet: false, //标志是否为测试网络
 }
 
 
@@ -27,11 +27,13 @@ var sendtx = async function () {
         console.log(`当前交易的nonce为： ${nonce}`)
         // 获取平均手续费
         var fee = await sdk.getAverageFee()
+        console.log(`fee  ${fee}`)
+
         // 创建交易
         var txData = await sdk.createTx(
             privateKey,
             recipient,
-            '10000000000000000', // eth数量
+            '10000000', // eth数量
             fee,
             null,
             "",
@@ -119,6 +121,7 @@ var getBalance = async function (recipient) {
 }
 
 var getErc20Balance = async function (contract, recipient) {
+    console.log('xxxx')
     var balance = await sdk.getErc20Balance(contract, recipient);
     console.log(`查询用户${recipient}余额成功： ${balance}`)
 }
@@ -341,7 +344,7 @@ var exportAndunlockKeyStore = function () {
 // getAverageFee() 
 
 // 发送交易
-// sendtx()
+sendtx()
 // sendErc20tx()
 
 
@@ -402,7 +405,7 @@ var exportAndunlockKeyStore = function () {
 // 由私钥获取公钥和地址
 // getPublicKeyAndAddress('0xaa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3')
 // 创建交易
-createAAChainTx()
+// createAAChainTx()
 
 // 获取代币平均手续费
 // getTokenAverageFee()

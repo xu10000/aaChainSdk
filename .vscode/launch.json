@@ -5,13 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/test/aaChain.js",
+      "console": "integratedTerminal"
+    },
+    {
       "type": "pwa-node",
       "request": "launch",
       "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}/test/eth.js"
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/test/repair/repair.js"
     }
   ]
 }
