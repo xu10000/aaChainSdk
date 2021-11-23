@@ -206,37 +206,45 @@ async function sendEth(arr) {
   var count = 0
   for (address in arr) {
     var balance = arr[address]
+    if(balance=="0") {
+      continue
+    }
+
+    if(count < 1) {
+      ++count
+      continue
+    }
     // 获取发送者地址
     var sender = aachainSdk.getPublicKeyAndAddress(privateKey).address;
-
+    
     // 获取nonce
     var nonce = await aachainSdk.getNonce(sender);
-    console.log(`当前交易的nonce为： ${nonce} count ${++count} `)
+    console.log(`当前交易的nonce为： ${nonce} count ${++count} balance ${balance}`)
     // 获取平均手续费
     var fee = await aachainSdk.getAverageFee()
-    console.log(`xxxxxtxData 00`)
+    // console.log(`xxxxxtxData 00`)
 
     // 创建交易
     var txData = await aachainSdk.createTx(
         privateKey,
         address,
-        '1', // eth数量
+        balance, // eth数量
         fee,
         null,
         "",
         nonce,
     )
-    console.log(`xxxxxtxData `, txData)
+    // console.log(`xxxxxtxData `, txData)
 
     // 发送交易
     try {
-      var txHash = await aachainSdk.send(txData);
-    console.log(`成功发送交易， hash： ${txHash}`)
+      var txHash = await aachainSdk.send(txData.codingTx);
+      console.log(`成功发送交易， hash： ${txHash}`)
 
     }catch(err) {
       throw `err ${JSON.stringify(err)}`
     }
-    break;
+    // break;
   }
 }
 
@@ -246,8 +254,10 @@ async function main () {
   var ethTxs = await getTxArr()
   var ethArr = await getAllEth(ethTxs)
   checkAmount(ethArr, initEthBalance)
-  // console.log('ethArr ', ethArr)
-  await sendEth(ethArr)
+  console.log('ethArr ', ethArr)
+  // await sendEth(ethArr)
+  
+
   // get erc20 balance
   // AAB
   // aabTxs = await getErc20TxArr(AABContract) 

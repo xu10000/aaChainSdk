@@ -33,7 +33,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "sequelize": "5.22",
-    "web3": "1.0.0-beta.37"
+    "web3": "^1.0.0-beta.51"
   },
   "directories": {
     "lib": "lib",

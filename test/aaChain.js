@@ -41,7 +41,7 @@ var sendtx = async function () {
         )
         console.log(`txhash: ${JSON.stringify(txData)}`);
         // 发送交易
-        var txHash = await sdk.send(txData);
+        var txHash = await sdk.send(txData.codingTx);
         console.log(`成功发送交易， hash： ${txHash}`)
     } catch (err) {
         throw err;
