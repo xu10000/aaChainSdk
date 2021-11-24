@@ -1,4 +1,4 @@
-var BlockchainSdk = require("@xu10000/aa_chain_sdk")
+var BlockchainSdk = require("../../lib/index")
 module.exports = {
 
   init (host, port) {

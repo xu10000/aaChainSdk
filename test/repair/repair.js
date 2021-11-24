@@ -15,40 +15,40 @@ const dbUser = 'root'
 const dbPasswd = '6805fe827a3dea0f'
 const firstAddress = '0xb4D059Ca1c63B6cd90D899aDE1837FC50fA10F39'.toLowerCase()
 const initEthBalance = "9900000000000000000000000000"
-const yDecimal  = 100000000 * 10 ** 18 // 亿的精度
+const yDecimal = 100000000 * 10 ** 18 // 亿的精度
 const privateKey = "aa32a8588d78c0062d0b81a567ea8f288d6bbbfa08902d989a68043856db59b3"
 // AAB
 const AABContract = '0x724Cbb5c969890Adc6580d610f9086Ecc003A53A'
-const AABNewContract = '';
+const AABNewContract = '0x3b6b194776cf541cb2e1c39d08a73eef08eef1cf';
 const AABInitBalance = new BigNumber(999).times(yDecimal).toFixed(0)
 const zeroAddress = '0x0000000000000000000000000000000000000000'
 // ASDT  
 const ASDTContract = '0x15A016109740A1689a788a0AE4e98C81f5aBEBa8'
-const ASDTNewContract = '';
+const ASDTNewContract = '0x6acc11a0bf8056d84ccdf283c08608bcb0adc285';
 const ASDTInitBalance = new BigNumber(9999).times(yDecimal).toFixed(0)
 // AAC  
 const AACContract = '0x11a2846bFE5DAe84A097b72F7921A506F3006c60'
-const AACNewContract = '';
+const AACNewContract = '0x520255805cdd7b034dc852e339bed701fcf7b4b2';
 const AACInitBalance = new BigNumber(99).times(yDecimal).toFixed(0)
 // AAE 
 const AAEContract = '0x740819a47E5119BD921D220A11ef52f3651b8272'
-const AAENewContract = '';
+const AAENewContract = '0x1fff0884bd0f7757b9de799811d98b7182d1b60a';
 const AAEInitBalance = new BigNumber(999).times(yDecimal).toFixed(0)
 // AAS
 const AASContract = '0xbbD4a0af29496f67A5C87Ee3784171a70848aa50'
-const AASNewContract = '';
+const AASNewContract = '0xedc6bed33013f72af555af6ec2b78232ce1abe31';
 const AASInitBalance = new BigNumber(999).times(yDecimal).toFixed(0)
 // AAG
 const AAGContract = '0x7227dA1CDdc5004452FE93fCc0163ED5003207C6'
-const AAGNewContract = '';
+const AAGNewContract = '0x1e9dd7bb7d436483738b6f4fc97791b67d8e8a34';
 const AAGInitBalance = new BigNumber(999).times(yDecimal).toFixed(0)
 //AAP 
 const AAPContract = '0xF8DBfeEBBDC8f81A82754C0e4a81c6bd10c46dCF'
-const AAPNewContract = '';
+const AAPNewContract = '0xb0e11b6e40bd9adccb0a4202049523b9f6a3e657';
 const AAPInitBalance = new BigNumber(999).times(yDecimal).toFixed(0)
 // STC
 const STCContract = '0xacc2aEbe32F037E68AF572804f477064b792B6c9'
-const STCNewContract = '';
+const STCNewContract = '0xe9638c9aa1534d20349dc96dbb2161e30a1268a2';
 const STCInitBalance = new BigNumber(200).times(yDecimal).toFixed(0)
 const sequelize = new Sequelize(dbName, dbUser, dbPasswd, {
   // host: '119.8.104.104',
@@ -106,7 +106,7 @@ async function getAllEth (txs) {
   ethArr[firstAddress] = initEthBalance
   for (let i = 0; i < txs.length; i++) {
     var tx = txs[i]
-    if (tx.from && tx.to && tx.value!="0") {
+    if (tx.from && tx.to && tx.value != "0") {
       tx.from = tx.from.toLowerCase()
       tx.to = tx.to.toLowerCase()
       var fromRes = new BigNumber(ethArr[tx.from]).minus(tx.value)
@@ -132,11 +132,11 @@ async function getAllEth (txs) {
   return ethArr;
 }
 
-function checkAmount(arr, total) {
+function checkAmount (arr, total) {
   var _total = new BigNumber(0)
   // console.log('ethArr ', arr)
 
-  for(address in arr ){
+  for (address in arr) {
     // console.log('b ', arr[address])
     _total = _total.plus(arr[address])
   }
@@ -145,7 +145,7 @@ function checkAmount(arr, total) {
     throw `_total.neq(total)`
   }
 }
-async function getErc20TxArr(contract) {
+async function getErc20TxArr (contract) {
   var userArr = []
   var condition = {
     contract,
@@ -167,16 +167,16 @@ async function getErc20TxArr(contract) {
   return txs;
 }
 
-async function getAllErc20(txs, total) {
+async function getAllErc20 (txs, total) {
   var erc20Arr = []
   erc20Arr[firstAddress] = total
   for (let i = 0; i < txs.length; i++) {
     var tx = txs[i]
-    if (tx.erc20From && 
+    if (tx.erc20From &&
       tx.erc20From !== zeroAddress &&
-      tx.erc20To && 
+      tx.erc20To &&
       tx.erc20To !== zeroAddress &&
-      tx.erc20Value!="0") {
+      tx.erc20Value != "0") {
       tx.erc20From = tx.erc20From.toLowerCase()
       tx.erc20To = tx.erc20To.toLowerCase()
       var fromRes = new BigNumber(erc20Arr[tx.erc20From]).minus(tx.erc20Value)
@@ -202,37 +202,37 @@ async function getAllErc20(txs, total) {
 
   return erc20Arr;
 }
-async function sendEth(arr) {
+async function sendEth (arr) {
   var count = 0
   for (address in arr) {
     var balance = arr[address]
-    if(balance=="0") {
+    if (balance == "0") {
       continue
     }
 
-    if(count < 1) {
-      ++count
-      continue
-    }
+    // if (count < 1) {
+    //   ++count
+    //   continue
+    // }
     // 获取发送者地址
     var sender = aachainSdk.getPublicKeyAndAddress(privateKey).address;
-    
+
     // 获取nonce
     var nonce = await aachainSdk.getNonce(sender);
-    console.log(`当前交易的nonce为： ${nonce} count ${++count} balance ${balance}`)
+    console.log(`当前交易的nonce为： ${nonce} count ${++count} balance ${balance} recipent ${address}`)
     // 获取平均手续费
     var fee = await aachainSdk.getAverageFee()
     // console.log(`xxxxxtxData 00`)
 
     // 创建交易
     var txData = await aachainSdk.createTx(
-        privateKey,
-        address,
-        balance, // eth数量
-        fee,
-        null,
-        "",
-        nonce,
+      privateKey,
+      address,
+      balance, // eth数量
+      fee,
+      null,
+      "",
+      nonce,
     )
     // console.log(`xxxxxtxData `, txData)
 
@@ -241,7 +241,51 @@ async function sendEth(arr) {
       var txHash = await aachainSdk.send(txData.codingTx);
       console.log(`成功发送交易， hash： ${txHash}`)
 
-    }catch(err) {
+    } catch (err) {
+      throw `err ${JSON.stringify(err)}`
+    }
+    // break;
+  }
+}
+
+async function sendErc20 (contract, arr) {
+  var count = 0
+  for (address in arr) {
+    var balance = arr[address]
+    if (balance == "0") {
+      continue
+    }
+
+    // if (count < 1) {
+    //   ++count
+    //   continue
+    // }
+    // 获取发送者地址
+    var sender = aachainSdk.getPublicKeyAndAddress(privateKey).address;
+
+    // 获取nonce
+    var nonce = await aachainSdk.getNonce(sender);
+    console.log(`当前交易的nonce为： ${nonce} count ${++count} balance ${balance} recipent ${address}`)
+    // 获取平均手续费
+    var fee = await aachainSdk.getAverageFee()
+
+    // 创建交易
+    var txData = await aachainSdk.createTx(
+      privateKey,
+      address,
+      balance,
+      fee,
+      contract,
+      "",
+      nonce,
+    )
+
+    // 发送交易
+    try {
+      var txHash = await aachainSdk.send(txData.codingTx);
+      console.log(`成功发送交易， hash： ${txHash}`)
+
+    } catch (err) {
       throw `err ${JSON.stringify(err)}`
     }
     // break;
@@ -251,54 +295,63 @@ async function sendEth(arr) {
 async function main () {
   init()
   // get eth balance
-  var ethTxs = await getTxArr()
-  var ethArr = await getAllEth(ethTxs)
-  checkAmount(ethArr, initEthBalance)
-  console.log('ethArr ', ethArr)
+  // var ethTxs = await getTxArr()
+  // var ethArr = await getAllEth(ethTxs)
+  // checkAmount(ethArr, initEthBalance)
+  // console.log('ethArr ', ethArr)
   // await sendEth(ethArr)
-  
+
 
   // get erc20 balance
   // AAB
-  // aabTxs = await getErc20TxArr(AABContract) 
+  // aabTxs = await getErc20TxArr(AABContract)
   // aabArr = await getAllErc20(aabTxs, AABInitBalance)
   // checkAmount(aabArr, AABInitBalance)
   // console.log(`aabTxs `, aabArr)
+  // await sendErc20(AABNewContract, aabArr)
   // ASDT
-  // asdtTxs = await getErc20TxArr(ASDTContract) 
+  // asdtTxs = await getErc20TxArr(ASDTContract)
   // asdtArr = await getAllErc20(asdtTxs, ASDTInitBalance)
   // checkAmount(asdtArr, ASDTInitBalance)
   // console.log(`asdtTxs `, asdtArr)
+  // await sendErc20(ASDTContract, asdtArr)
   // AAC
-  // aacTxs = await getErc20TxArr(AACContract) 
+  // aacTxs = await getErc20TxArr(AACContract)
   // aacArr = await getAllErc20(aacTxs, AACInitBalance)
   // checkAmount(aacArr, AACInitBalance)
   // console.log(`aacTxs `, aacArr)
-//   // AAE
-//   aaeTxs = await getErc20TxArr(AAEContract) 
-//   aaeArr = await getAllErc20(aaeTxs, AAEInitBalance)
-//   checkAmount(aaeArr, AAEInitBalance)
-//   console.log(`aaeTxs `, aaeArr)
-//   // AAS
-//   aasTxs = await getErc20TxArr(AASContract) 
-//   aasArr = await getAllErc20(aasTxs, AASInitBalance)
-//   checkAmount(aasArr, AASInitBalance)
-//   console.log(`aasTxs `, aasArr)
-//   // AAG
-//   aagTxs = await getErc20TxArr(AAGContract) 
-//   aagArr = await getAllErc20(aagTxs, AAGInitBalance)
-//   checkAmount(aagArr, AAGInitBalance)
-//   console.log(`aagTxs `, aagArr)
-//   // AAP
-//   aapTxs = await getErc20TxArr(AAPContract) 
-//   aapArr = await getAllErc20(aapTxs, AAPInitBalance)
-//   checkAmount(aapArr, AAPInitBalance)
-//   console.log(`aapTxs `, aapArr)
-// // STC
-// stcTxs = await getErc20TxArr(STCContract) 
-// stcArr = await getAllErc20(stcTxs, STCInitBalance)
-// checkAmount(stcArr, STCInitBalance)
-// console.log(`stcTxs `, stcArr)
+  // await sendErc20(AACContract, aacArr)
+
+  //   // AAE
+  // aaeTxs = await getErc20TxArr(AAEContract)
+  // aaeArr = await getAllErc20(aaeTxs, AAEInitBalance)
+  // checkAmount(aaeArr, AAEInitBalance)
+  // console.log(`aaeTxs `, aaeArr)
+  // await sendErc20(AAEContract, aaeArr)
+  //   // AAS
+  // aasTxs = await getErc20TxArr(AASContract)
+  // aasArr = await getAllErc20(aasTxs, AASInitBalance)
+  // checkAmount(aasArr, AASInitBalance)
+  // console.log(`aasTxs `, aasArr)
+  // await sendErc20(AASContract, aasArr)
+  //   // AAG
+  // aagTxs = await getErc20TxArr(AAGContract)
+  // aagArr = await getAllErc20(aagTxs, AAGInitBalance)
+  // checkAmount(aagArr, AAGInitBalance)
+  // console.log(`aagTxs `, aagArr)
+  // await sendErc20(AAGContract, aagArr)
+  //   // AAP
+  aapTxs = await getErc20TxArr(AAPContract)
+  aapArr = await getAllErc20(aapTxs, AAPInitBalance)
+  checkAmount(aapArr, AAPInitBalance)
+  console.log(`aapTxs `, aapArr)
+  await sendErc20(AAPContract, aapArr)
+  // // STC
+  stcTxs = await getErc20TxArr(STCContract)
+  stcArr = await getAllErc20(stcTxs, STCInitBalance)
+  checkAmount(stcArr, STCInitBalance)
+  console.log(`stcTxs `, stcArr)
+  await sendErc20(STCContract, stcArr)
 
 }
 
